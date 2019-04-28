@@ -1,18 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-The PSI data defined by ISO/IEC 13818-1 has 4 different tables
-- Program Association Table (PAT)
-- Program Mapping Table (PMT)
-- Conditional Access Table (CAT)
-- NIT (Network Information Table)
-"""
-
 class Psi(object):
     def __init__(self, data):
         self.pointer_field = data[0]
         self.filler_bytes = 8 * int(self.pointer_field)
+        self.table_header = TableHeader(data[1+self.filler_bytes:])
 
 class TableHeader(object):
     def __init__(self, data):
@@ -68,4 +61,3 @@ class EsStream(object):
         self.es_info_unused = data[2] >> 6 & 0x3
         self.es_info_len = ((data[2] & 0x3) << 8) | data[3]
         self.es_descriptors = data[6:6+self.es_info_len]
-    

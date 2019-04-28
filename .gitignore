@@ -57,3 +57,7 @@ coverage.xml
 # test-files
 test-files/
 spec-docs/
+
+# Local crap
+.DS_Store
+.vscode*
