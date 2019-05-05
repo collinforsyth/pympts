@@ -32,20 +32,15 @@ class Parser(object):
             summary.add(packet.pid)
         print(summary, invalid)
 
-    def read_pat(self):
-        for packet in self.read_ts_packet():
-            print("{}".format(packet))
-            # If we reached a new packet while reading another
-            if packet.pid == 0:
-                # ts packets with pid == 0 always have PAT information
-                payload = packet.payload
-                pat = Pat(payload[1:])
-                return pat
-        return None
+    def read_pmt(self):
+        payloads = self.parse_payloads()
+        # Need to read PAT
+        pat = Pat(payloads[0][0])
+        pmt = Pmt(payloads[pat.programs[0].program_num])
+        return pmt
     
     def parse_payloads(self):
         # Each pid will have the various payloads here
-        # 
         payloads = defaultdict(list)
         # a holder of a pid to a buffer
         current_payloads = defaultdict(bytearray)

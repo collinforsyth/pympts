@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
 from struct import unpack
 
 PCR_FLAG = 0x10
@@ -30,7 +29,7 @@ class TsPacket(object):
         # Payload data is determined if there is an adaptation field
         # if adapt_field & 0x01, there is a payload
         # If adapt_field == 0x11, there is an adaptation field followed by
-        # payload 
+        # payload
         if self.adapt & 0b10:
             # if adaptation field
             adapt_length = unpacked_pkt[3][0]
@@ -41,7 +40,7 @@ class TsPacket(object):
                 self.payload = None
         else:
             self.payload = unpacked_pkt[3]
-    
+
     def __str__(self):
         return "TsPacket(sync={},transport_error=,{},payload_start={},priority={},pid={},scramble={},adapt={},continuity_count={})".format(
             self.sync,
